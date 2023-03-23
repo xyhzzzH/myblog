@@ -1,0 +1,23 @@
+{
+  "id": "3972941",
+  "name": "myblog",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5929353",
+      "name": "Password",
+      "font_class": "Password",
+      "unicode": "e680",
+      "unicode_decimal": 59008
+    },
+    {
+      "icon_id": "8642238",
+      "name": "ACCOUNT",
+      "font_class": "ACCOUNT",
+      "unicode": "e806",
+      "unicode_decimal": 59398
+    }
+  ]
+}
