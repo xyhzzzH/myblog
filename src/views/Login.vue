@@ -6,7 +6,7 @@
         <el-form-item>
           <el-input
             v-model="loginForm.userName"
-            placeholder="请输入用户名"
+            placeholder="请输入用户名 "
           ></el-input>
         </el-form-item>
         <el-form-item>
