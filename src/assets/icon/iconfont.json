@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "34750596",
+      "name": "open-copy",
+      "font_class": "close",
+      "unicode": "e807",
+      "unicode_decimal": 59399
+    },
+    {
+      "icon_id": "1388124",
+      "name": "open",
+      "font_class": "open",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "1215323",
+      "name": "blog",
+      "font_class": "blog",
+      "unicode": "e717",
+      "unicode_decimal": 59159
+    },
+    {
+      "icon_id": "5929335",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "11232168",
+      "name": "settings",
+      "font_class": "settings",
+      "unicode": "e7dc",
+      "unicode_decimal": 59356
+    },
+    {
+      "icon_id": "27764180",
+      "name": "专题服务",
+      "font_class": "zhuantifuwu",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "5929353",
       "name": "Password",
       "font_class": "Password",

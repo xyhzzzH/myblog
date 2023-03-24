@@ -8,9 +8,9 @@ const contentTypeJson = "application/json"
 const contentTypeFile = "multipart/form-data"
 
 const request = (config) => {
-    const { url, params,dataType = 'form',showLoading = 'true' } = config;
+    const { url, params, dataType = 'form', showLoading = 'true' } = config;
     let contentType = contentTypeForm;
-    if (dataType == 'json') { 
+    if (dataType == 'json') {
         contentType = contentTypeJson
     } else if (dataType == 'file') {
         contentType = contentTypeFile;
@@ -18,7 +18,7 @@ const request = (config) => {
         for (let key in params) {
             param.append(key, params[key])
         }
-        params = param
+        params = param;
     }
     const instantce = axois.create({
         baseURL: '/api',
@@ -61,17 +61,17 @@ const request = (config) => {
                     config.errorCallback();
                 }
                 return Promise.reject(responseData.info)
-            }else{
+            } else {
                 if (responseData.code == 200) {
                     return responseData;
-                }else if(responseData.code == 901){
+                } else if (responseData.code == 901) {
                     // 请求超时后直接跳到首页
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         router.push("/login")
-                    },2000)
+                    }, 2000)
                     return Promise.reject("登陆超时");
                 }
-                
+
             }
         },
         (error) => {

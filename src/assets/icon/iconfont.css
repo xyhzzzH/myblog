@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3972941 */
-  src: url('iconfont.woff2?t=1679576558882') format('woff2'),
-       url('iconfont.woff?t=1679576558882') format('woff'),
-       url('iconfont.ttf?t=1679576558882') format('truetype');
+  src: url('iconfont.woff2?t=1679643742670') format('woff2'),
+       url('iconfont.woff?t=1679643742670') format('woff'),
+       url('iconfont.ttf?t=1679643742670') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-close:before {
+  content: "\e807";
+}
+
+.icon-open:before {
+  content: "\e618";
+}
+
+.icon-blog:before {
+  content: "\e717";
+}
+
+.icon-delete:before {
+  content: "\e679";
+}
+
+.icon-settings:before {
+  content: "\e7dc";
+}
+
+.icon-zhuantifuwu:before {
+  content: "\e60a";
 }
 
 .icon-Password:before {
