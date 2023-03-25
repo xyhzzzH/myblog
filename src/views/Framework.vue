@@ -42,7 +42,14 @@
                   </span>
                   <ul class="sub-menu" v-show="menu.open">
                     <li v-for="(item, i) in menu.children" :key="i">
-                      <span class="sub-menu-item">{{ item.title }}</span>
+                      <router-link
+                        :to="item.path"
+                        :class="[
+                          'sub-menu-item',
+                          activePath === item.path ? 'selected-menu' : '',
+                        ]"
+                        >{{ item.title }}</router-link
+                      >
                     </li>
                   </ul>
                 </li>
@@ -50,15 +57,20 @@
             </div>
           </div>
         </el-aside>
-        <el-main class="right-main">Main</el-main>
+        <el-main class="right-main">
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script setup>
-import { getCurrentInstance, ref } from "vue";
+import { getCurrentInstance, ref, watch } from "vue";
 import VueCookies from "vue-cookies";
+import { useRouter, useRoute } from "vue-router";
+const router = useRouter();
+const route = useRoute();
 const { proxy } = getCurrentInstance();
 const openClose = (index) => {
   const open = menuList.value[index].open;
@@ -128,9 +140,17 @@ const init = () => {
   userInfo.value.avatar = proxy.globalInfo.imagUrl + userInfo.value.avatar;
 };
 init();
+const activePath = ref(null);
+watch(
+  route,
+  (newValue) => {
+    activePath.value = newValue.path;
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .layout {
   .header {
     display: flex;
@@ -151,10 +171,9 @@ init();
           font-size: 14px;
         }
       }
-      .avator{
+      .avator {
         width: 100px;
         border-radius: 5px;
-        
       }
     }
   }
@@ -184,12 +203,19 @@ init();
         }
         .sub-menu {
           margin-left: 25px;
-          font-size: 16px;
+          font-size: 16px;          
           .sub-menu-item {
             display: block;
             padding: 0px 20px;
             line-height: 30px;
             cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+          }
+          .selected-menu{
+            color: #409eff;
+            background-color: #ecf5ff;
+            font-weight: 600;
           }
           .sub-menu-item:hover {
             color: #409eff;

@@ -130,7 +130,7 @@ const login = () => {
     }
     proxy.Message.success("登录成功");
     setTimeout(() => {
-      router.push('./home')
+      router.push('/')
     }, 1000);
     const loginInfo = {
       account: params.account,
