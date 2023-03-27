@@ -39,7 +39,7 @@ const uploadImage = async (file) => {
       type: 0,
     },
   });
-  const fileName = result.data.fileName;
+  let fileName = result.data.fileName;
   emit("update:modelValue", fileName);
   emit("callback", fileName);
 };

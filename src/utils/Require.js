@@ -8,9 +8,9 @@ const contentTypeJson = "application/json"
 const contentTypeFile = "multipart/form-data"
 
 const request = (config) => {
-    const { url, params, dataType = 'form', showLoading = 'true' } = config;
+    let { url, params, dataType = 'form', showLoading = 'true' } = config;
     let contentType = contentTypeForm;
-    if (dataType == 'json') {
+    if (dataType === 'json') {
         contentType = contentTypeJson
     } else if (dataType == 'file') {
         contentType = contentTypeFile;

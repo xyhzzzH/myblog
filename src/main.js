@@ -13,7 +13,7 @@ import  VueCookies  from 'vue-cookies'
 import Table from './components/Table.vue'
 import Cover from './components/Cover.vue'
 import Dialog from './components/Dialog.vue'
-// import CoverUpload from './components/CoverUpload.vue'
+import CoverUpload from './components/CoverUpload.vue'
 // import EditorHtml from './components/EditorHtml.vue'
 // import EditorMarkdown from './components/EditorMarkdown.vue'
 // import Window from './components/Window.vue'
@@ -26,12 +26,12 @@ app.config.globalProperties.Message = Message
 app.config.globalProperties.Cover = Cover
 app.config.globalProperties.VueCookies = VueCookies
 app.config.globalProperties.globalInfo = {
-    imagUrl:"/api/file/getImage/"
+    imageUrl:"/api/file/getImage/"
 }
 app.component("Table",Table)
 app.component("Cover",Cover)
 app.component("Dialog",Dialog)
-// app.component("CoverUpload",CoverUpload)
+app.component("CoverUpload",CoverUpload)
 // app.component("EditorHtml",EditorHtml)
 // app.component("EditorMarkdown",EditorMarkdown)
 // app.component("Window",Window)

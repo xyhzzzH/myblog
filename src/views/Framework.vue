@@ -137,7 +137,7 @@ const menuList = ref([
 const userInfo = ref();
 const init = () => {
   userInfo.value = VueCookies.get("userInfo");
-  userInfo.value.avatar = proxy.globalInfo.imagUrl + userInfo.value.avatar;
+  userInfo.value.avatar = proxy.globalInfo.imageUrl + userInfo.value.avatar;
 };
 init();
 const activePath = ref(null);
