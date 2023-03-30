@@ -26,7 +26,7 @@
           <el-table-column :key="index"
                            :prop="column.prop"
                            :label="column.label"
-                           :align="column.align || 'left'"
+                           :align="column.align || 'center'"
                            :width="column.width">
             <template #default="scope">
               <slot :name="column.scopedSlots"
@@ -40,7 +40,7 @@
           <el-table-column :key="index"
                            :prop="column.prop"
                            :label="column.label"
-                           :align="column.align || 'left'"
+                           :align="column.align || 'center'"
                            :width="column.width"
                            :fixed="column.fixed">
           </el-table-column>

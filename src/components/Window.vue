@@ -16,8 +16,9 @@
                    v-if="showCancel">
           取消
         </el-button>
-        <el-button v-for="btn in buttons"
+        <el-button v-for="(btn,index) in buttons"
                    :type="btn.type"
+                   :key="index"
                    @click="btn.click">
           {{btn.text}}
         </el-button>
@@ -58,7 +59,8 @@ const close = () => {
   left: 0px;
   width: 100%;
   height: calc(100vh - 70px);
-  background: #fff;
+  // background: #fff;
+  background-color: red;
   z-index: 50;
   .title {
     height: 30px;
