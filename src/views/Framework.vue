@@ -230,6 +230,7 @@ watch(
       }
     }
     .right-main {
+      position: relative;
       background-color: #fff;
     }
   }

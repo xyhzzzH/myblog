@@ -1,5 +1,5 @@
 <template>
-  <div>
+  
     <v-md-editor
       :model-value="modelValue"
       :height="height + 'px'"
@@ -8,7 +8,7 @@
       @upload-image="handleUploadImage"
       @change="change"
     ></v-md-editor>
-  </div>
+  
 </template>
 
 <script setup>

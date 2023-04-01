@@ -46,7 +46,12 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-button type="primary" style="margin-left: 10px" @click="showEdit('add')">新增博客</el-button>
+        <el-button
+          type="primary"
+          style="margin-left: 10px"
+          @click="showEdit('add')"
+          >新增博客</el-button
+        >
       </el-row>
     </el-form>
   </div>
@@ -82,7 +87,12 @@
       </template>
       <template #op="{ row }">
         <div class="op">
-          <a href="javascript:void(0)" class="a-link" @click="showEdit('update,row')">修改</a>
+          <a
+            href="javascript:void(0)"
+            class="a-link"
+            @click="showEdit('update,row')"
+            >修改</a
+          >
           <el-divider direction="vertical" />
           <a href="javascript:void(0)" class="a-link" @click="del(row)">删除</a>
           <el-divider direction="vertical" />
@@ -91,8 +101,49 @@
       </template>
     </Table>
     <!-- 新增修改弹窗 -->
-    <Window :show="windowConfig.show" :button="windowConfig.buttons" @close="closeWindow"></Window>
+    <Window
+      :show="windowConfig.show"
+      :buttons="windowConfig.buttons"
+      @close="closeWindow"
+    >
+      <el-form :model="editForm" :rules="editRules" ref="editFormRef">
+        <el-form-item prop="title">
+          <div class="title-input">
+            <el-input
+              placeholder="请输入博客标题"
+              v-model="editForm.title"
+            ></el-input>
+          </div>
+        </el-form-item>
+        <el-form-item prop="markdownContent">
+          <EditorMarkdown
+            :height="editorHeight"
+            :modelValue="editForm.markdownContent"
+          ></EditorMarkdown>
+        </el-form-item>
+      </el-form>
+      <!-- <EditorHtml :height="editorHtml"></EditorHtml> -->
+    </Window>
   </div>
+   <Dialog
+      :show="dialogConfig.show"
+      :title="dialogConfig.title"
+      :buttons="dialogConfig.buttons"
+      width="500px"
+      @close="dialogConfig.show = false"
+    >
+      <el-form
+        :model="settingForm"
+        :rules="rules"
+        ref="settingFormRef"
+        label-width="80px"
+      >
+        <el-form-item label="博客分类" prop="categoryName">
+          <el-input placeholder="请输入名称" v-model="settingForm.categoryName">
+          </el-input>
+        </el-form-item>
+      </el-form>
+    </Dialog>
 </template>
 
 <script setup>
@@ -105,6 +156,25 @@ const { proxy } = getCurrentInstance();
 const queryFormData = reactive({});
 const categoryList = ref([]);
 const blogList = ref([]);
+const editorHeight = window.innerHeight - 240;
+const editorHtml = window.innerHeight - 300;
+const editForm = ref({});
+const editRules = {};
+const settingForm = ref({})
+// 博客设置
+const dialogConfig = reactive({
+  show: false,
+  title: "标题",
+  buttons: [
+    {
+      type: "danger",
+      text: "确定",
+      click: (e) => {
+        
+      },
+    },
+  ],
+});
 const loadCategoryList = async () => {
   let res = await proxy.Request({
     url: api.loadCategory,
@@ -185,22 +255,38 @@ const windowConfig = reactive({
     {
       type: "danger",
       text: "确定",
-      click:(e)=>{
-        console.log(e);
-      }
-    }
+      click: (e) => {
+        showSettings();
+      },
+    },
   ],
 });
 
-const closeWindow = ()=>{
+// 展示博客设置
+const showSettings = ()=>{
+  dialogConfig.show = true;
+};
+const closeWindow = () => {
   windowConfig.show = false;
   loadBlogList();
-}
+};
 
-const showEdit = (type,data)=>{
+const showEdit = (type, data) => {
   windowConfig.show = true;
-}
+};
 </script>
 
 <style lang="scss">
+.title-input{
+  
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  .el-input__wrapper{
+    box-shadow: none;
+  }
+  input{
+    font-size: 20px;
+  }
+  
+}
 </style>

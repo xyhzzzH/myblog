@@ -29,7 +29,7 @@
 
 <script setup>
 import { ref } from "vue";
-const windowWidth = window.innerWidth - 280;
+const windowWidth = window.innerWidth - 250;
 
 const props = defineProps({
   show: {
@@ -58,9 +58,8 @@ const close = () => {
   top: 0px;
   left: 0px;
   width: 100%;
-  height: calc(100vh - 70px);
-  // background: #fff;
-  background-color: red;
+  height: calc(100vh - 60px);
+  background: #fff;
   z-index: 50;
   .title {
     height: 30px;

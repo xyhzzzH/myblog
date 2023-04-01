@@ -15,9 +15,9 @@ import Table from './components/Table.vue'
 import Cover from './components/Cover.vue'
 import Dialog from './components/Dialog.vue'
 import CoverUpload from './components/CoverUpload.vue'
-// import EditorHtml from './components/EditorHtml.vue'
-// import EditorMarkdown from './components/EditorMarkdown.vue'
+import EditorHtml from './components/EditorHtml.vue'
 import Window from './components/Window.vue'
+import EditorMarkdown from './components/EditorMarkdown.vue'
 
 const app = createApp(App);
 app.use(router);
@@ -34,8 +34,8 @@ app.component("Table", Table)
 app.component("Cover", Cover)
 app.component("Dialog", Dialog)
 app.component("CoverUpload", CoverUpload)
-// app.component("EditorHtml",EditorHtml)
-// app.component("EditorMarkdown",EditorMarkdown)
+app.component("EditorHtml",EditorHtml)
 app.component("Window",Window)
+app.component("EditorMarkdown",EditorMarkdown)
 app.mount('#app');
 
