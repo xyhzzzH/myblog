@@ -4,22 +4,13 @@
       <el-row>
         <el-col :span="4">
           <el-form-item label="标题" prop="titleFuzzy">
-            <el-input
-              style="width: 214px"
-              placeholder="请输入名称"
-              v-model="queryFormData.titleFuzzy"
-              clearable
-            >
+            <el-input style="width: 214px" placeholder="请输入名称" v-model="queryFormData.titleFuzzy" clearable>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="状态" prop="status">
-            <el-select
-              v-model="queryFormData.status"
-              clearable
-              placeholder="请选择状态"
-            >
+            <el-select v-model="queryFormData.status" clearable placeholder="请选择状态">
               <el-option :value="0" label="草稿"></el-option>
               <el-option :value="1" label="已发布"></el-option>
             </el-select>
@@ -27,17 +18,9 @@
         </el-col>
         <el-col :span="5">
           <el-form-item label="分类" prop="categoryId">
-            <el-select
-              v-model="queryFormData.categoryId"
-              clearable
-              placeholder="请选择分类"
-            >
-              <el-option
-                v-for="item in categoryList"
-                :key="item.categoryId"
-                :value="item.categoryId"
-                :label="item.categoryName"
-              ></el-option>
+            <el-select v-model="queryFormData.categoryId" clearable placeholder="请选择分类">
+              <el-option v-for="item in categoryList" :key="item.categoryId" :value="item.categoryId"
+                :label="item.categoryName"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -46,23 +29,12 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-button
-          type="primary"
-          style="margin-left: 10px"
-          @click="showEdit('add')"
-          >新增博客</el-button
-        >
+        <el-button type="primary" style="margin-left: 10px" @click="showEdit('add')">新增博客</el-button>
       </el-row>
     </el-form>
   </div>
   <div class="table-body">
-    <Table
-      :columns="columns"
-      :showPagination="true"
-      :dataSource="blogList"
-      :fetch="loadBlogList"
-      :options="tableOptions"
-    >
+    <Table :columns="columns" :showPagination="true" :dataSource="blogList" :fetch="loadBlogList" :options="tableOptions">
       <template #cover="{ row }">
         <Cover :cover="row.cover"></Cover>
       </template>
@@ -87,12 +59,7 @@
       </template>
       <template #op="{ row }">
         <div class="op">
-          <a
-            href="javascript:void(0)"
-            class="a-link"
-            @click="showEdit('update,row')"
-            >修改</a
-          >
+          <a href="javascript:void(0)" class="a-link" @click="showEdit('update', row)">修改</a>
           <el-divider direction="vertical" />
           <a href="javascript:void(0)" class="a-link" @click="del(row)">删除</a>
           <el-divider direction="vertical" />
@@ -101,109 +68,63 @@
       </template>
     </Table>
     <!-- 新增修改弹窗 -->
-    <Window
-      :show="windowConfig.show"
-      :buttons="windowConfig.buttons"
-      @close="closeWindow"
-    >
+    <Window :show="windowConfig.show" :buttons="windowConfig.buttons" @close="closeWindow">
       <el-form :model="editForm" :rules="rules" ref="editFormRef">
         <el-form-item prop="title">
           <div class="title-input">
-            <el-input
-              placeholder="请输入博客标题"
-              v-model="editForm.title"
-            ></el-input>
+            <el-input placeholder="请输入博客标题" v-model="editForm.title"></el-input>
           </div>
         </el-form-item>
         <el-form-item prop="content">
-          <EditorMarkdown
-            :height="editorHeight"
-            v-model="editForm.markdownContent"
-            @htmlContent="setHtmlContent"
-          ></EditorMarkdown>
+          <EditorMarkdown :height="editorHeight" v-model="editForm.markdownContent" @htmlContent="setHtmlContent"
+            v-if="editForm.editorType == 1"></EditorMarkdown>
+          <EditorHtml v-if="editForm.editorType == 0" :height="editorHtml" v-model="editForm.markdownContent"
+            @htmlContent="setHtmlContent">
+          </EditorHtml>
         </el-form-item>
       </el-form>
-      <!-- <EditorHtml :height="editorHtml"></EditorHtml> -->
+
     </Window>
   </div>
-  <Dialog
-    :show="dialogConfig.show"
-    :title="dialogConfig.title"
-    :buttons="dialogConfig.buttons"
-    width="800px"
-    @close="dialogConfig.show = false"
-  >
-    <el-form
-      :model="settingForm"
-      :rules="rules"
-      ref="settingFormRef"
-      label-width="80px"
-    >
+  <Dialog :show="dialogConfig.show" :title="dialogConfig.title" :buttons="dialogConfig.buttons" width="800px"
+    @close="closeSetting">
+    <el-form :model="editForm" :rules="rules" ref="editFormRef" label-width="80px">
       <el-form-item label="博客分类" prop="categoryId">
-        <el-select
-          style="width: 100%"
-          v-model="settingForm.categoryId"
-          clearable
-          placeholder="请选择分类"
-        >
-          <el-option
-            v-for="item in categoryList"
-            :key="item.categoryId"
-            :value="item.categoryId"
-            :label="item.categoryName"
-          ></el-option>
+        <el-select style="width: 100%" v-model="editForm.categoryId" clearable placeholder="请选择分类">
+          <el-option value="0" label="全部分类"></el-option>
+          <el-option v-for="item in categoryList" :key="item.categoryId" :value="item.categoryId"
+            :label="item.categoryName"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="封面" prop="cover">
-        <CoverUpload v-model="settingForm.cover"></CoverUpload>
+        <CoverUpload v-model="editForm.cover"></CoverUpload>
       </el-form-item>
       <el-form-item label="博客类型" prop="type">
-        <el-radio-group v-model="settingForm.type">
+        <el-radio-group v-model="editForm.type">
           <el-radio :label="0">原创</el-radio>
           <el-radio :label="1">转载</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item
-        label="原文地址"
-        prop="reprintUrl"
-        v-if="settingForm.type == 0"
-      >
-        <el-input placeholder="请输入原文地址" v-model="settingForm.reprintUrl">
+      <el-form-item label="原文地址" prop="reprintUrl" v-if="editForm.type == 1">
+        <el-input placeholder="请输入原文地址" v-model="editForm.reprintUrl">
         </el-input>
       </el-form-item>
       <el-form-item label="评论" prop="allowComment">
-        <el-radio-group v-model="settingForm.allowComment">
+        <el-radio-group v-model="editForm.allowComment">
           <el-radio :label="1">允许</el-radio>
           <el-radio :label="0">不允许</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="博客摘要" prop="summary">
-        <el-input
-          type="textarea"
-          placeholder="请输入摘要"
-          v-model="settingForm.summary"
-        >
+        <el-input type="textarea" placeholder="请输入摘要" v-model="editForm.summary">
         </el-input>
       </el-form-item>
       <el-form-item label="博客标签" prop="tag">
-        <el-tag
-          v-for="tag in blogTags"
-          :key="tag"
-          closable
-          :disable-transitions="false"
-          @close="handleClose(tag)"
-        >
+        <el-tag v-for="tag in editForm.tag" :key="tag" closable :disable-transitions="false" @close="handleClose(tag)">
           {{ tag }}
         </el-tag>
-        <el-input
-          v-if="inputVisible"
-          ref="InputRef"
-          v-model="inputValue"
-          class="tag-input"
-          size="small"
-          @keyup.enter="handleInputConfirm"
-          @blur="handleInputConfirm"
-        />
+        <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="tag-input" size="small"
+          @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
         <el-button v-else size="small" @click="showInput">
           + New Tag
         </el-button>
@@ -218,6 +139,8 @@ const api = {
   loadCategory: "/category/loadAllCategory4Blog",
   loadBlog: "/blog/loadBlog",
   saveBlog: "/blog/saveBlog",
+  getUserInfo: '/getUserInfo',
+  getBlogDetail: '/blog/getBlogById'
 };
 const { proxy } = getCurrentInstance();
 const queryFormData = reactive({});
@@ -225,9 +148,9 @@ const categoryList = ref([]);
 const blogList = ref([]);
 const editorHeight = window.innerHeight - 240;
 const editorHtml = window.innerHeight - 300;
-const editForm = ref({});
+const editForm = ref({ tag: [] });
+const editFormRef = ref();
 const editRules = {};
-const settingForm = ref({});
 const rules = {
   title: [{ required: true, message: "请输入标题" }],
   content: [{ required: true, message: "请输入内容" }],
@@ -237,31 +160,43 @@ const rules = {
   reprintUrl: [{ required: true, message: "请输入原文地址" }],
   summary: [{ required: true, message: "请输入博客摘要" }],
 };
+const getUserInfo = async () => {
+  let res = await proxy.Request({
+    url: api.getUserInfo,
+
+  })
+  if (!res) {
+    return;
+  }
+  editForm.value.editorType = res.data.editorType;
+}
 // markdown编辑设置html内容
 const setHtmlContent = (htmlContent) => {
   editForm.value.content = htmlContent;
-  console.log(htmlContent);
 };
 const submitBlog = () => {
-  settingFormRef.value.validate(async (valid) => {
+  editFormRef.value.validate(async (valid) => {
     if (!valid) {
       return;
     }
     const params = {};
-    Object.assign(params, settingForm.value);
     Object.assign(params, editForm.value);
-    params.editorType = 1;
+    console.log(params);
+    params.tag = params.tag.join("|");
     let res = await proxy.Request({
       url: api.saveBlog,
       params: params,
     });
     proxy.Message.success("保存博客成功");
+    dialogConfig.show = false;
+    windowConfig.show = false;
+    loadBlogList()
   });
 };
 // 博客设置
 const dialogConfig = reactive({
   show: false,
-  title: "标题",
+  title: "博客设置",
   buttons: [
     {
       type: "danger",
@@ -342,10 +277,8 @@ const tableData = reactive({});
 const tableOptions = {
   extHeight: 100,
 };
-const editFormRef = ref();
 const windowConfig = reactive({
   show: false,
-  title: "标题",
   buttons: [
     {
       type: "danger",
@@ -359,33 +292,62 @@ const windowConfig = reactive({
 
 // 展示博客设置
 const showSettings = () => {
-  editFormRef.value.validate((valid) => {
+  editFormRef.value.validateField(['content', 'title'], (valid) => {
     if (!valid) {
-      console.log(editForm.value);
       return;
     }
     dialogConfig.show = true;
   });
+
+};
+const closeSetting = () => {
+  dialogConfig.show = false
 };
 const closeWindow = () => {
+  editFormRef.value.resetFields();
   windowConfig.show = false;
   loadBlogList();
 };
-
+const getBlogDetail = async (blogId) => {
+  let res = await proxy.Request({
+    url: api.getBlogDetail,
+    params: {
+      blogId
+    }
+  })
+  if (!res) {
+    return;
+  }
+  editForm.value = res.data;
+  if (res.data.tag) {
+    editForm.value.tag = res.data.tag.split("|");
+  } else {
+    editForm.value.tag = [];
+  }
+}
 const showEdit = (type, data) => {
   windowConfig.show = true;
+  nextTick(() => {
+    editFormRef.value.resetFields();
+    editForm.value = { tag: [] };
+    if (type === 'add') {
+      getUserInfo();
+    } else {
+      getBlogDetail(data.blogId);
+
+    }
+  })
 };
+
+//* 标签部分
 // 输入框
 const inputValue = ref("");
-// 标签数组
-const blogTags = ref([]);
 // 输入框可视
 const inputVisible = ref(false);
 const InputRef = ref();
-const settingFormRef = ref();
 
 const handleClose = (tag) => {
-  blogTags.value.splice(blogTags.value.indexOf(tag), 1);
+  editForm.value.tag.splice(editForm.value.tag.indexOf(tag), 1);
 };
 const showInput = () => {
   inputVisible.value = true;
@@ -396,7 +358,7 @@ const showInput = () => {
 
 const handleInputConfirm = () => {
   if (inputValue.value) {
-    blogTags.value.push(inputValue.value);
+    editForm.value.tag.push(inputValue.value);
   }
   inputVisible.value = false;
   inputValue.value = "";
@@ -407,16 +369,20 @@ const handleInputConfirm = () => {
 .is-error .title-input .el-input__wrapper {
   box-shadow: none;
 }
+
 .title-input {
   width: 100%;
   border-bottom: 1px solid #ddd;
+
   .el-input__wrapper {
     box-shadow: none;
   }
+
   input {
     font-size: 20px;
   }
 }
+
 .tag-input {
   width: 80px;
 }

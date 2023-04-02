@@ -1,14 +1,6 @@
 <template>
-  
-    <v-md-editor
-      :model-value="modelValue"
-      :height="height + 'px'"
-      :disabled-menus="[]"
-      :include-level="[1, 2, 3, 4, 5, 6]"
-      @upload-image="handleUploadImage"
-      @change="change"
-    ></v-md-editor>
-  
+  <v-md-editor :model-value="modelValue" :height="height + 'px'" :disabled-menus="[]" :include-level="[1, 2, 3, 4, 5, 6]"
+    @upload-image="handleUploadImage" @change="change"></v-md-editor>
 </template>
 
 <script setup>
@@ -17,11 +9,11 @@ import "@kangc/v-md-editor/lib/style/base-editor.css";
 import githubTheme from "@kangc/v-md-editor/lib/theme/github.js";
 import "@kangc/v-md-editor/lib/theme/style/github.css";
 import { getCurrentInstance } from "vue";
-
-const { proxy } = getCurrentInstance();
-
 // highlightjs
 import hljs from "highlight.js";
+const { proxy } = getCurrentInstance();
+
+
 
 VMdEditor.use(githubTheme, {
   Hljs: hljs,
@@ -65,5 +57,4 @@ const handleUploadImage = async (event, insertImage, files) => {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

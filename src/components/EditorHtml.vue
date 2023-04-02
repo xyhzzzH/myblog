@@ -56,6 +56,7 @@ const emit = defineEmits();
 
 const onChange = (editor) => {
   emit("update:modelValue", editor.getHtml());
+  emit("htmlContent", editor.getHtml());
 };
 
 // 组件销毁时，也及时销毁编辑器
