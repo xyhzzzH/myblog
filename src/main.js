@@ -6,6 +6,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import "./assets/icon/iconfont.css"
 
+import store from '../store'
 import Request from './utils/Require'
 import Message from './utils/Message'
 import VueCookies from 'vue-cookies'
@@ -23,6 +24,7 @@ import EditorMarkdown from './components/EditorMarkdown.vue'
 const app = createApp(App);
 app.use(router);
 app.use(ElementPlus);
+app.use(store)
 app.config.globalProperties.Request = Request
 app.config.globalProperties.Message = Message
 app.config.globalProperties.Cover = Cover

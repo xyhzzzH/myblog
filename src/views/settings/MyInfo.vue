@@ -4,7 +4,7 @@
       <el-row :gutter="10">
         <el-col :span="8">
           <el-form-item label="头像" prop="avatar">
-            <CoverUpload v-model="formData.avatar"></CoverUpload>
+            <CoverUpload v-model="formData.avatar" @callback="saveAvatar"></CoverUpload>
           </el-form-item>
           <el-form-item label="昵称" prop="nickName">
             <el-input v-model="formData.nickName" placeholder="请输入昵称">
@@ -38,45 +38,27 @@
         </el-col>
       </el-row>
     </el-form>
-    <!-- <Dialog
-      :show="dialogConfig.show"
-      :title="dialogConfig.title"
-      :buttons="dialogConfig.buttons"
-      width="400px"
-      @close="dialogConfig.show = false"
-    >
-      <el-form
-        :model="passwordFormData"
-        :rules="rules"
-        ref="passwordFormRef"
-        label-width="80px"
-      >
+    <Dialog :show="dialogConfig.show" :title="dialogConfig.title" :buttons="dialogConfig.buttons" width="400px"
+      @close="dialogConfig.show = false">
+      <el-form :model="passwordFormData" :rules="rules" ref="passwordFormRef" label-width="80px">
         <el-form-item label="密码" prop="password">
-          <el-input
-            placeholder="请输入密码"
-            type="password"
-            v-model="passwordFormData.password"
-          >
+          <el-input placeholder="请输入密码" type="password" v-model="passwordFormData.password">
           </el-input>
         </el-form-item>
         <el-form-item label="重复密码" prop="rePassword">
-          <el-input
-            placeholder="请再次输入密码"
-            type="password"
-            v-model="passwordFormData.rePassword"
-          >
+          <el-input placeholder="请再次输入密码" type="password" v-model="passwordFormData.rePassword">
           </el-input>
         </el-form-item>
       </el-form>
-    </Dialog> -->
+    </Dialog>
   </div>
 </template>
 
 <script setup>
 import { useStore } from "vuex";
-import { getCurrentInstance, ref, reactive, nextTick } from "vue";
+import { getCurrentInstance, ref, reactive, nextTick } from "vue"; 
+const store = useStore();
 const { proxy } = getCurrentInstance();
-// const store = useStore();
 const api = {
   getUserInfo: "getUserInfo",
   saveMyInfo: "saveMyInfo",
@@ -85,19 +67,68 @@ const api = {
 };
 const formData = ref({});
 const formDataRef = ref()
+const passwordFormData = ref({})
+const passwordFormRef = ref(null)
+const dialogConfig = reactive({
+  show: false,
+  title: '修改密码',
+  buttons: [{
+    type: 'danger',
+    text: '确定',
+    click: (e) => {
+      submitPass()
+    }
+  }]
+})
+const saveAvatar = async (avatar) => {
+  let res = await proxy.Request({
+    url: api.saveAvatar,
+    params: {
+      avatar: avatar
+    }
+  })
+  if (!res) {
+    return;
+  }
+  proxy.Message.success('头像修改成功');
+  store.commit('updateUserInfo', {
+    nickName: formData.value.nickName,
+    avatar: formData.value.avatar
+  })
+}
+const showUpdatePassword = () => {
+  dialogConfig.show = true;
+  nextTick(() => {
+    passwordFormRef.value.resetFields();
 
-// const validateRePass = (rule,value,callback)=>{
-//   if (value!=fo) {
+  })
+}
+const submitPass = () => {
+  passwordFormRef.value.validate(async (valid) => {
+    if (!valid) {
+      return;
+    }
+    let res = await proxy.Request({
+      url: api.updateMyPassword,
+      params: {
+        password: passwordFormData.value.password
+      }
+    })
+    if (!res) {
+      return;
+    }
+    proxy.Message.success('密码修改成功');
+    dialogConfig.show = false;
+  })
+}
 
-//   }
-// }
-// rePassword: [
-//   { required: true, message: "请再次输入密码" },
-//   {
-//     validator: validateRePass,
-//     message: "两次输入的密码不一致",
-//   },
-// ],
+const validateRePass = (rule, value, callback) => {
+  if (value != passwordFormData.value.password) {
+    callback(new Error(rule.message))
+  } else {
+    callback();
+  }
+}
 const rules = {
   nickName: [{ required: true, message: "昵称不能为空" }],
   editorType: [{ required: true, message: "请选择默认编辑器" }],
@@ -108,7 +139,13 @@ const rules = {
       message: "密码最少8位，只能数字字母和特殊字符",
     },
   ],
-
+  rePassword: [
+    { required: true, message: "请再次输入密码" },
+    {
+      validator: validateRePass,
+      message: "两次输入的密码不一致",
+    },
+  ],
   phone: [
     { required: true, message: "请输入手机号" },
     {
@@ -148,6 +185,10 @@ const saveMy = () => {
       return;
     }
     proxy.Message.success('保存成功')
+    store.commit('updateUserInfo', {
+      nickName: formData.value.nickName,
+      avatar: formData.value.avatar
+    })
   })
 
 
