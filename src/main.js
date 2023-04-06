@@ -10,6 +10,7 @@ import Request from './utils/Require'
 import Message from './utils/Message'
 import VueCookies from 'vue-cookies'
 import Confirm from './utils/Confirm'
+import Verify from './utils/Verify'
 
 import Table from './components/Table.vue'
 import Cover from './components/Cover.vue'
@@ -27,6 +28,7 @@ app.config.globalProperties.Message = Message
 app.config.globalProperties.Cover = Cover
 app.config.globalProperties.Confirm = Confirm
 app.config.globalProperties.VueCookies = VueCookies
+app.config.globalProperties.Verify = Verify
 app.config.globalProperties.globalInfo = {
     imageUrl: "/api/file/getImage/"
 }

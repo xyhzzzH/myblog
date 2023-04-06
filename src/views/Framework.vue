@@ -99,7 +99,7 @@ const menuList = ref([
     children: [
       {
         title: "专题管理",
-        path: "/special/category",
+        path: "/special/list",
       },
     ],
   },
@@ -110,15 +110,15 @@ const menuList = ref([
     children: [
       {
         title: "个人信息设置",
-        path: "/setting/my",
+        path: "/settings/my",
       },
       {
         title: "博客成员",
-        path: "/setting/user",
+        path: "/settings/user",
       },
       {
         title: "系统设置",
-        path: "/setting/sysSetting",
+        path: "/settings/sysSetting",
       },
     ],
   },

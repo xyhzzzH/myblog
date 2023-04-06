@@ -24,7 +24,32 @@ const routes = [
                 path: '/blog/category',
                 component: () => import('../views/blog/BlogCategory.vue')
 
-            }]
+            },
+            {
+                name: '专题管理',
+                path: '/special/list',
+                component: () => import('../views/special/SpecialList.vue')
+
+            },
+            {
+                name: '个人信息',
+                path: '/settings/my',
+                component: () => import('../views/settings/MyInfo.vue')
+
+            },
+            {
+                name: '博客成员',
+                path: '/settings/user',
+                component: () => import('../views/settings/TeamUser.vue')
+
+            },
+            {
+                name: '系统信息',
+                path: '/settings/sysSetting',
+                component: () => import('../views/settings/SysInfo.vue')
+
+            }
+        ]
     }
 
 ]
