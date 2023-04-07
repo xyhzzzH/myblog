@@ -4,23 +4,14 @@
       <el-row>
         <el-col :span="4">
           <el-form-item label="标题" prop="titleFuzzy">
-            <el-input
-              style="width: 214px"
-              placeholder="请输入名称"
-              v-model="queryFormData.titleFuzzy"
-              clearable
-              @keyup.enter="loadBlogList"
-            >
+            <el-input style="width: 214px" placeholder="请输入名称" v-model="queryFormData.titleFuzzy" clearable
+              @keyup.enter="loadBlogList">
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="状态" prop="status">
-            <el-select
-              v-model="queryFormData.status"
-              clearable
-              placeholder="请选择状态"
-            >
+            <el-select v-model="queryFormData.status" clearable placeholder="请选择状态">
               <el-option :value="0" label="草稿"></el-option>
               <el-option :value="1" label="已发布"></el-option>
             </el-select>
@@ -28,17 +19,9 @@
         </el-col>
         <el-col :span="5">
           <el-form-item label="分类" prop="categoryId">
-            <el-select
-              v-model="queryFormData.categoryId"
-              clearable
-              placeholder="请选择分类"
-            >
-              <el-option
-                v-for="item in categoryList"
-                :key="item.categoryId"
-                :value="item.categoryId"
-                :label="item.categoryName"
-              ></el-option>
+            <el-select v-model="queryFormData.categoryId" clearable placeholder="请选择分类">
+              <el-option v-for="item in categoryList" :key="item.categoryId" :value="item.categoryId"
+                :label="item.categoryName"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -47,23 +30,12 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-button
-          type="primary"
-          style="margin-left: 10px"
-          @click="showEdit('add')"
-          >新增博客</el-button
-        >
+        <el-button type="primary" style="margin-left: 10px" @click="showEdit('add')">新增博客</el-button>
       </el-row>
     </el-form>
   </div>
   <div class="table-body">
-    <Table
-      :columns="columns"
-      :showPagination="true"
-      :dataSource="blogList"
-      :fetch="loadBlogList"
-      :options="tableOptions"
-    >
+    <Table :columns="columns" :showPagination="true" :dataSource="blogList" :fetch="loadBlogList" :options="tableOptions">
       <template #cover="{ row }">
         <Cover :cover="row.cover"></Cover>
       </template>
@@ -88,86 +60,43 @@
       </template>
       <template #op="{ row }">
         <div class="op">
-          <a
-            href="javascript:void(0)"
-            class="a-link"
-            @click="showEdit('update', row)"
-            >修改</a
-          >
+          <a href="javascript:void(0)" class="a-link" v-if="userInfo.userId == row.userId"
+            @click="showEdit('update', row)">修改</a>
+          <span v-else>--</span>
           <el-divider direction="vertical" />
-          <a href="javascript:void(0)" class="a-link" @click="delBlog(row)"
-            >删除</a
-          >
+          <a href="javascript:void(0)" class="a-link" v-if="userInfo.userId == row.userId" @click="delBlog(row)">删除</a>
+          <span v-else>--</span>
           <el-divider direction="vertical" />
-          <a
-            href="javascript:void(0)"
-            class="a-link"
-            @click="showDetail(row.blogId)"
-            >预览</a
-          >
+          <a href="javascript:void(0)" class="a-link" @click="showDetail(row.blogId)">预览</a>
         </div>
       </template>
     </Table>
     <!-- 新增修改弹窗 -->
-    <Window
-      :show="windowConfig.show"
-      :buttons="windowConfig.buttons"
-      @close="closeWindow"
-    >
+    <Window :show="windowConfig.show" :buttons="windowConfig.buttons" @close="closeWindow">
       <el-form :model="editForm" :rules="rules" ref="editFormRef">
         <el-form-item prop="title">
           <div class="title-input">
-            <el-input
-              placeholder="请输入博客标题"
-              v-model="editForm.title"
-            ></el-input>
+            <el-input placeholder="请输入博客标题" v-model="editForm.title"></el-input>
           </div>
         </el-form-item>
         <el-form-item prop="content">
-          <EditorMarkdown
-            :height="editorHeight"
-            v-model="editForm.markdownContent"
-            @htmlContent="setHtmlContent"
-            v-if="editForm.editorType == 1"
-          ></EditorMarkdown>
-          <EditorHtml
-            v-if="editForm.editorType == 0"
-            :height="editorHtml"
-            v-model="editForm.markdownContent"
-            @htmlContent="setHtmlContent"
-          >
+          <EditorMarkdown :height="editorHeight" v-model="editForm.markdownContent" @htmlContent="setHtmlContent"
+            v-if="editForm.editorType == 1"></EditorMarkdown>
+          <EditorHtml v-if="editForm.editorType == 0" :height="editorHtml" v-model="editForm.markdownContent"
+            @htmlContent="setHtmlContent">
           </EditorHtml>
         </el-form-item>
       </el-form>
     </Window>
   </div>
-  <Dialog
-    :show="dialogConfig.show"
-    :title="dialogConfig.title"
-    :buttons="dialogConfig.buttons"
-    width="800px"
-    @close="closeSetting"
-  >
-    <el-form
-      :model="editForm"
-      :rules="rules"
-      ref="editFormRef2"
-      label-width="80px"
-    >
+  <Dialog :show="dialogConfig.show" :title="dialogConfig.title" :buttons="dialogConfig.buttons" width="800px"
+    @close="closeSetting">
+    <el-form :model="editForm" :rules="rules" ref="editFormRef2" label-width="80px">
       <el-form-item label="博客分类" prop="categoryId">
-        <el-select
-          style="width: 100%"
-          v-model="editForm.categoryId"
-          clearable
-          placeholder="请选择分类"
-        >
+        <el-select style="width: 100%" v-model="editForm.categoryId" clearable placeholder="请选择分类">
           <el-option value="0" label="全部分类"></el-option>
-          <el-option
-            v-for="item in categoryList"
-            :key="item.categoryId"
-            :value="item.categoryId"
-            :label="item.categoryName"
-          ></el-option>
+          <el-option v-for="item in categoryList" :key="item.categoryId" :value="item.categoryId"
+            :label="item.categoryName"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="封面" prop="cover">
@@ -179,11 +108,7 @@
           <el-radio :label="1">转载</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item
-        label="原文地址"
-        prop="reprintUrl"
-        v-if="editForm.type == 1"
-      >
+      <el-form-item label="原文地址" prop="reprintUrl" v-if="editForm.type == 1">
         <el-input placeholder="请输入原文地址" v-model="editForm.reprintUrl">
         </el-input>
       </el-form-item>
@@ -194,32 +119,15 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="博客摘要" prop="summary">
-        <el-input
-          type="textarea"
-          placeholder="请输入摘要"
-          v-model="editForm.summary"
-        >
+        <el-input type="textarea" placeholder="请输入摘要" v-model="editForm.summary">
         </el-input>
       </el-form-item>
       <el-form-item label="博客标签" prop="tag">
-        <el-tag
-          v-for="tag in editForm.tag"
-          :key="tag"
-          closable
-          :disable-transitions="false"
-          @close="handleClose(tag)"
-        >
+        <el-tag v-for="tag in editForm.tag" :key="tag" closable :disable-transitions="false" @close="handleClose(tag)">
           {{ tag }}
         </el-tag>
-        <el-input
-          v-if="inputVisible"
-          ref="InputRef"
-          v-model="inputValue"
-          class="tag-input"
-          size="small"
-          @keyup.enter="handleInputConfirm"
-          @blur="handleInputConfirm"
-        />
+        <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="tag-input" size="small"
+          @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
         <el-button v-else size="small" @click="showInput">
           + New Tag
         </el-button>
@@ -241,6 +149,7 @@ const api = {
   getBlogDetail: "/blog/getBlogById",
 };
 const { proxy } = getCurrentInstance();
+const userInfo = ref(proxy.VueCookies.get('userInfo') || {});
 const queryFormData = reactive({});
 const categoryList = ref([]);
 const blogList = ref([]);

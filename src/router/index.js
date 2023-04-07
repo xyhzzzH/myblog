@@ -48,6 +48,12 @@ const routes = [
                 path: '/settings/sysSetting',
                 component: () => import('../views/settings/SysInfo.vue')
 
+            },
+            {
+                name: '回收站',
+                path: '/recovery/list',
+                component: () => import('../views/recovery/RecoveryList.vue')
+
             }
         ]
     }

@@ -55,7 +55,6 @@
 </template>
 
 <script setup>
-import VueCookies from "vue-cookies";
 import { getCurrentInstance, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import md5 from "js-md5";
@@ -94,7 +93,7 @@ const rules = {
   ],
 };
 const init = () => {
-  const loginInfo = VueCookies.get("loginInfo");
+  const loginInfo = proxy.VueCookies.get("loginInfo");
   if (!loginInfo) {
     return;
   }
@@ -106,7 +105,7 @@ const login = () => {
     if (!valid) {
       return;
     }
-    let cookieLoginInfo = VueCookies.get("loginInfo");
+    let cookieLoginInfo = proxy.VueCookies.get("loginInfo");
     let cookiePassword =
       cookieLoginInfo == null ? null : cookieLoginInfo.password;
     let params = {
@@ -137,11 +136,11 @@ const login = () => {
       password: params.password,
       remenberMe: loginForm.remenberMe,
     };
-    VueCookies.set("userInfo", result.data, 0);
+    proxy.VueCookies.set("userInfo", result.data, 0);
     if (loginForm.remenberMe) {
-      VueCookies.set("loginInfo", loginInfo, "7d");
+      proxy.VueCookies.set("loginInfo", loginInfo, "7d");
     } else {
-      VueCookies.remove("loginInfo");
+      proxy.VueCookies.remove("loginInfo");
     }
   });
 };
