@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8081/',  //你要跨域访问的网址
+        target: 'http://47.115.211.83:8081/',  //你要跨域访问的网址
         changeOrigin: true,   // 允许跨域
       }
 

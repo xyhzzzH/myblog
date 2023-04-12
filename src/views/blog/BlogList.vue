@@ -195,6 +195,8 @@ const submitBlog = () => {
       params: params,
     });
     proxy.Message.success("保存博客成功");
+    editFormRef.value.resetFields();
+    editFormRef2.value.resetFields();
     dialogConfig.show = false;
     windowConfig.show = false;
     loadBlogList();
@@ -299,6 +301,7 @@ const windowConfig = reactive({
 
 // 展示博客设置
 const showSettings = () => {
+
   editFormRef.value.validateField(["content", "title"], (valid) => {
     if (!valid) {
       return;
